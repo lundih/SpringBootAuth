@@ -1,0 +1,16 @@
+server:
+  port: 8091
+  error:
+    include-message: always
+    include-exception: true
+
+auth:
+  jwt-signing-key: reallySecretKey
+  jwt-access-expiration: 43200
+  jwt-refresh-expiration: 86400
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
