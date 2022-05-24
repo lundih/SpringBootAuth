@@ -41,3 +41,5 @@ this will execute the jacocoTestReport and jacocoTestCoverageVerification tasks 
 The jacocoTestReport task will generate html reports that can be found at /build/reports/jacoco/html/index.html.
 The jacocoTestCoverageVerification task will check that the code coverage is above a specified value and if not, will 
 cause the build to fail
+
+<b>Auth yeah!</b>
