@@ -1,0 +1,51 @@
+version: 2
+jobs:
+  build_project:
+    working_directory: ~/AuthorizationServer
+    docker:
+      - image: circleci/openjdk:11-jdk
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: false
+      - run:
+          name: Run tests and check coverage
+          context: auth
+          command: ./gradlew check
+      - run:
+          name: Save test results
+          command: |
+            mkdir -p ~/test-results/junit/
+            find . -type f -regex ".*/build/reports/junit/.*xml" -exec cp {} ~/test-results/junit/ \;
+          when: always
+      - run:
+          name: Generate Dokka documentation
+          command: ./gradlew dokkaHtml
+      - run:
+          name: Save Dokka documentation
+          command: |
+            mkdir -p ~/documentation/dokka/ && cp -a build/dokka/. ~/documentation/dokka/
+      - store_test_results:
+          path: ~/test-results
+      - store_artifacts:
+          path: build/reports/junit/html
+          destination: junit
+      - store_artifacts:
+          path: build/reports/jacoco
+          destination: coverage
+      - store-artifacts:
+          path: build/dokka
+      - run:
+          name: Build jar file
+          command: ./gradlew build
+      - persist_to_workspace:
+          root: ~/AuthorizationServer
+          paths:
+            - build
+            - Dockerfile
+
+workflows:
+  version: 2
+  build_project_and_docker_image_and_push:
+    jobs:
+      - build_project
