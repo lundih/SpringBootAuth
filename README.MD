@@ -1,5 +1,5 @@
 # Authorization Server
-The service runs on port 8091.
+The service runs on port 8091
 
 ## Development
 To build the authorization service:
